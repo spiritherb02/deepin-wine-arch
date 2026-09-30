@@ -1,0 +1,36 @@
+# Maintainer: spiritherb <h3189458857@163.com>
+# deepin-wine-builder 4.0.2 是按 Qt 6.8 编的，其 vtable 引用了 Qt 6.8 时期
+# QListView 导出的两个 protected 虚函数实现：
+#     QListView::mousePressEvent(QMouseEvent *)
+#     QListView::eventFilter(QObject *, QEvent *)
+# Qt 6.9 起 Qt 把这两个 override 从 QListView 移除，Arch 的 Qt 6.11.2 不再导出，
+# 导致引擎启动即 symbol lookup error。
+# 本包提供转发垫片：用原始修饰名导出这两个符号，内部转发给父类
+# QAbstractItemView 的实现 —— 等价于 Qt 6.11 下"子类不重写时 vtable 指向父类"的原生行为。
+pkgname=deepin-wine-builder-qt6compat
+pkgver=1.0
+pkgrel=1
+pkgdesc="Qt6 ABI shim for deepin-wine-builder (restores QListView::mousePressEvent/eventFilter removed in Qt 6.9)"
+arch=('x86_64')
+url="https://www.deepin.org"
+license=('MIT')
+depends=('qt6-base')
+options=('!strip')
+
+source=('qt6compat.cpp' 'qt6compat.map')
+sha256sums=('SKIP' 'SKIP')
+
+build() {
+  cd "$srcdir"
+  g++ -std=c++17 -O2 -fPIC -shared \
+      -o libdeepin-wine-qt6compat.so qt6compat.cpp \
+      $(pkg-config --cflags Qt6Widgets) \
+      -Wl,--version-script="$srcdir/qt6compat.map" \
+      -Wl,-soname,libdeepin-wine-qt6compat.so \
+      $(pkg-config --libs Qt6Widgets)
+}
+
+package() {
+  install -Dm755 "$srcdir/libdeepin-wine-qt6compat.so" \
+    "$pkgdir/usr/lib/libdeepin-wine-qt6compat.so"
+}

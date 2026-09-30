@@ -1,0 +1,36 @@
+# Maintainer: spiritherb <h3189458857@163.com>
+# 由 gen-pkgbuilds.py 自动生成 — 来源: uniontech com-store appstorev23/crimson
+pkgname=deepin-wine-helper
+pkgver=5.4.12+v25
+pkgrel=1
+pkgdesc="Deepin Wine Helper (DTK6/Qt6 runtime helper)"
+arch=('x86_64')
+url="https://www.deepin.org"
+license=('proprietary')
+depends=(
+  7zip
+  glibc
+  dtk6core
+  dtk6gui
+  dtk6widget
+  gcc-libs
+  libglvnd
+  qt6-base
+  libx11
+  noto-fonts-cjk
+  python-dbus
+  xorg-xwininfo
+)
+options=('!strip')
+
+_deb="$srcdir/deepin-wine-helper_5.4.12+v25-1_amd64.deb"
+sha256sums=('34549f17c05046cbdff5d3c8257079e3b87702bec799a6ba4bdf502108906671')
+noextract=('deepin-wine-helper_5.4.12+v25-1_amd64.deb')
+source=('deepin-wine-helper_5.4.12+v25-1_amd64.deb')
+
+package() {
+  cd "$srcdir"
+  # 解出 deb 全部成员，只把 data.tar.* 灌进 pkgdir
+  ar x "deepin-wine-helper_5.4.12+v25-1_amd64.deb"
+  tar -xf data.tar.* -C "$pkgdir"
+}

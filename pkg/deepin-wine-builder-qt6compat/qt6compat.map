@@ -1,0 +1,7 @@
+Qt_6 {
+  global:
+    _ZN9QListView11eventFilterEP7QObjectP6QEvent;
+    _ZN9QListView15mousePressEventEP11QMouseEvent;
+  local:
+    *;
+};

@@ -1,0 +1,26 @@
+post_install() {
+  # 与 deb 的 postinst 等价：让引擎接管 Windows 可执行文件与 msp/dwb。
+  # 注意 .exe 要同时注册三类：真 PE 内容嗅探得到 vnd.microsoft.portable-executable，
+  # 扩展名加权得到 x-msdownload，DOS 老程序才是 x-ms-dos-executable。
+  for m in application/x-ms-dos-executable x-scheme-handler/deepinwine \
+           application/x-msi application/x-wine-extension-msp \
+           application/x-msdos-batch text/x-msdos-batch application/dwb \
+           application/vnd.microsoft.portable-executable \
+           application/x-msdownload application/x-dosexec \
+           application/x-ms-shortcut; do
+    xdg-mime default deepin-wine-builder.desktop "$m" 2>/dev/null || true
+  done
+  update-desktop-database -q 2>/dev/null || true
+  echo ">> 统信 Windows 应用兼容引擎已注册 .exe/.msi/.bat/.lnk 默认打开方式"
+}
+
+post_upgrade() { post_install; }
+
+post_remove() {
+  # 不把关联指回别的 handler（可能同样不存在），而是【移除】默认关联，
+  # 让系统回退到"无默认程序"，由用户自己重新指定。
+  # 包安装脚本以 root 运行、拿不到用户 HOME，所以这里只给指引。
+  update-desktop-database -q 2>/dev/null || true
+  echo ">> 已卸载引擎。若 .exe 仍显示旧关联，请手动清理："
+  echo "   xdg-mime default '' <mime>   # 或编辑 ~/.config/mimeapps.list"
+}

@@ -1,0 +1,33 @@
+# Maintainer: spiritherb <h3189458857@163.com>
+# 由 gen-pkgbuilds.py 自动生成 — 来源: uniontech com-store appstorev23/crimson
+pkgname=deepin-wine-diag
+pkgver=3.3.1.013
+pkgrel=1
+pkgdesc="GUI diagnostics frontend for Deepin Wine"
+arch=('x86_64')
+url="https://www.deepin.org"
+license=('proprietary')
+depends=(
+  glibc
+  gcc-libs
+  qt6-base
+  deepin-wine-runtime
+  deepin-wine8-stable
+  deepin-wine-helper
+)
+optdepends=(
+  'deepin-wine6-stable'
+)
+options=('!strip')
+
+_deb="$srcdir/deepin-wine-diag_3.3.1.013-1_amd64.deb"
+sha256sums=('f324cd79ac28b937164544a97162cf0c03784e0537485b21f5db869e34b569be')
+noextract=('deepin-wine-diag_3.3.1.013-1_amd64.deb')
+source=('deepin-wine-diag_3.3.1.013-1_amd64.deb')
+
+package() {
+  cd "$srcdir"
+  # 解出 deb 全部成员，只把 data.tar.* 灌进 pkgdir
+  ar x "deepin-wine-diag_3.3.1.013-1_amd64.deb"
+  tar -xf data.tar.* -C "$pkgdir"
+}

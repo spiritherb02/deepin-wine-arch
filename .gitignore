@@ -1,0 +1,18 @@
+# 构建产物与上游二进制
+debs/
+repo/
+audit/
+.work/
+*.deb
+*.pkg.tar.zst
+*.pkg.tar.xz
+
+# makepkg 工作目录
+pkg/*/src/
+pkg/*/pkg/
+pkg/*/*.so
+pkg/*/*.part
+
+# 本地产物
+PKGBUILD.bak
+*.log

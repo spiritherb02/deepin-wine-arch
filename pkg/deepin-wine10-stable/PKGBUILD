@@ -1,0 +1,65 @@
+# Maintainer: spiritherb <h3189458857@163.com>
+# 由 gen-pkgbuilds.py 自动生成 — 来源: uniontech com-store appstorev23/crimson
+pkgname=deepin-wine10-stable
+pkgver=10.14deepin11
+pkgrel=1
+pkgdesc="WINE Is Not An Emulator - run MS Windows programs (Deepin/UOS build, Wine 10 stable)"
+arch=('x86_64')
+url="https://www.deepin.org"
+license=('proprietary')
+depends=(
+  alsa-lib
+  glibc
+  dbus
+  gcc-libs
+  glib2
+  libgphoto2
+  gst-plugins-base-libs
+  gstreamer
+  pcsclite
+  libpng
+  libpulse
+  sane
+  systemd-libs
+  libusb
+  libx11
+  libxext
+  ocl-icd
+  alsa-plugins
+  ncurses
+)
+optdepends=(
+  'libcap'
+  'cups'
+  'fontconfig'
+  'freetype2'
+  'glu'
+  'gnutls'
+  'krb5'
+  'libjpeg-turbo'
+  'unixodbc'
+  'mesa'
+  'sdl2-compat'
+  'v4l-utils'
+  'libxcomposite'
+  'libxcursor'
+  'libxfixes'
+  'libxi'
+  'libxinerama'
+  'libxrandr'
+  'libxrender'
+  'libxxf86vm'
+)
+options=('!strip')
+
+_deb="$srcdir/deepin-wine10-stable_10.14deepin11_amd64.deb"
+sha256sums=('a3412982cfb16d8e20d29508779ac5ad8a3b389a41737eebb7f657a1b5b9cb0f')
+noextract=('deepin-wine10-stable_10.14deepin11_amd64.deb')
+source=('deepin-wine10-stable_10.14deepin11_amd64.deb')
+
+package() {
+  cd "$srcdir"
+  # 解出 deb 全部成员，只把 data.tar.* 灌进 pkgdir
+  ar x "deepin-wine10-stable_10.14deepin11_amd64.deb"
+  tar -xf data.tar.* -C "$pkgdir"
+}

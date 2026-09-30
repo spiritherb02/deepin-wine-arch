@@ -1,0 +1,25 @@
+# Maintainer: spiritherb <h3189458857@163.com>
+# 由 gen-pkgbuilds.py 自动生成 — 来源: uniontech com-store appstorev23/crimson
+pkgname=deepin-wine-logtool
+pkgver=1.0.4
+pkgrel=1
+pkgdesc="Tools for analyzing Deepin Wine runtime logs"
+arch=('x86_64')
+url="https://www.deepin.org"
+license=('proprietary')
+depends=(
+  dconf
+)
+options=('!strip')
+
+_deb="$srcdir/deepin-wine-logtool_1.0.4_amd64.deb"
+sha256sums=('5b95dc2eda4b1e78c786ab45ef6c47a0d7fd3f7b534a02e0fd5f528e17162ad8')
+noextract=('deepin-wine-logtool_1.0.4_amd64.deb')
+source=('deepin-wine-logtool_1.0.4_amd64.deb')
+
+package() {
+  cd "$srcdir"
+  # 解出 deb 全部成员，只把 data.tar.* 灌进 pkgdir
+  ar x "deepin-wine-logtool_1.0.4_amd64.deb"
+  tar -xf data.tar.* -C "$pkgdir"
+}

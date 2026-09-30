@@ -1,0 +1,38 @@
+MIT License
+
+Copyright (c) 2026 SpiritHerb <https://github.com/spiritherb02>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## 适用范围（重要）
+
+本许可证**只覆盖本仓库中由 SpiritHerb 编写的打包脚本与源码**，即：
+
+- `gen/` 下的全部脚本
+- `pkg/**/PKGBUILD`、`pkg/**/*.install`
+- `pkg/deepin-wine-builder-qt6compat/qt6compat.cpp`、`qt6compat.map`
+- `makepkg.conf`
+- 各 Markdown 文档
+
+**不覆盖**通过本仓库脚本下载、解包、重新打包的第三方软件（deepin-wine 系列、
+统信 Windows 应用兼容引擎等）。那些软件的版权与许可归**统信软件技术有限公司（UnionTech）**
+及其各自权利人所有，本项目只是把它们从 Debian 格式转成 Arch 格式以便安装。
+详见 [NOTICE.md](NOTICE.md)。

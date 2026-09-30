@@ -1,0 +1,26 @@
+# Maintainer: spiritherb <h3189458857@163.com>
+# 兼容垫片：deepin-wine-builder 4.0.2 的 NEEDED 里写死 libyaml-cpp.so.0.7，
+# 而 Arch 现行 yaml-cpp 已是 0.9（soname 0.9，ABI 不兼容）。
+# 这里从 Arch 官方归档取出 0.7.0 的 .so，独立成一个包与系统 0.9 共存。
+# soname 不同（0.7 vs 0.9），不会与 extra/yaml-cpp 冲突。
+pkgname=libyaml-cpp07
+pkgver=0.7.0
+pkgrel=1
+pkgdesc="YAML parser and emitter in C++ (legacy 0.7 ABI shim for deepin-wine-builder)"
+arch=('x86_64')
+url="https://github.com/jbeder/yaml-cpp"
+license=('MIT')
+depends=('gcc-libs')
+options=('!strip')
+
+_archpkg="yaml-cpp-0.7.0-1-x86_64.pkg.tar.zst"
+source=("$_archpkg")
+sha256sums=('703117e4dee4b0a7ff6bafa364226ed4c6d99bc04f1ab1b257a83f5410870ab3')
+noextract=("$_archpkg")
+
+package() {
+  # 只取运行时库，headers 与 dev 软链一律不进包，避免与 extra/yaml-cpp 争文件
+  tar --zstd -xf "$_archpkg" -C "$pkgdir" --wildcards 'usr/lib/libyaml-cpp.so*'
+  rm -f "$pkgdir/usr/lib/libyaml-cpp.so"
+  ln -sf libyaml-cpp.so.0.7.0 "$pkgdir/usr/lib/libyaml-cpp.so.0.7"
+}

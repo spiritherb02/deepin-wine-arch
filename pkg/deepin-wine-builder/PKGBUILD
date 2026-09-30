@@ -1,0 +1,68 @@
+# Maintainer: spiritherb <h3189458857@163.com>
+# 由 gen-pkgbuilds.py 自动生成 — 来源: uniontech com-store appstorev23/crimson
+pkgname=deepin-wine-builder
+pkgver=4.0.2+v25
+pkgrel=2
+pkgdesc="统信 Windows 应用兼容引擎 (Deepin/UOS Windows application compatibility engine)"
+arch=('x86_64')
+makedepends=('patchelf')
+url="https://www.deepin.org"
+license=('proprietary')
+provides=('deepin-wine-runner')
+conflicts=('deepin-wine-runner')
+replaces=('deepin-wine-runner')
+depends=(
+  libarchive
+  glibc
+  dtk6core
+  dtk6gui
+  dtk6log
+  dtk6widget
+  gcc-libs
+  qt6-base
+  qt6-5compat
+  qt6-declarative
+  vulkan-icd-loader
+  libx11
+  libyaml-cpp07
+  fakeroot
+  cabextract
+  unrar
+  wqy-microhei
+  deepin-wine10-stable
+  deepin-wine-builder-qt6compat
+  deepin-qt6integration
+)
+optdepends=(
+  'deepin-wine11-stable'
+  'deepin-wine-staging'
+  'deepin-wine-logtool'
+  'deepin-wine-extras'
+  'deepin-qt6platform-plugins'
+  'vulkan-radeon'
+  'vulkan-intel'
+  'vulkan-nouveau'
+)
+install=deepin-wine-builder.install
+options=('!strip')
+
+_deb="$srcdir/deepin-wine-builder_4.0.2+v25-1_amd64.deb"
+sha256sums=('e77846f5a9dc3de4a1823c7778d2627dc16671f4989e4c5f116146f5e6b830c5')
+noextract=('deepin-wine-builder_4.0.2+v25-1_amd64.deb')
+source=('deepin-wine-builder_4.0.2+v25-1_amd64.deb')
+
+package() {
+  cd "$srcdir"
+  # 解出 deb 全部成员，只把 data.tar.* 灌进 pkgdir
+  ar x "deepin-wine-builder_4.0.2+v25-1_amd64.deb"
+  tar -xf data.tar.* -C "$pkgdir"
+
+  # 补 Qt6 ABI 缺口：挂上兼容垫片，免得启动时 symbol lookup error
+  patchelf --add-needed "libdeepin-wine-qt6compat.so" "$pkgdir/opt/apps/deepin-wine-builder/files/bin/deepin-wine-builder"
+
+  # 补上游 desktop 漏掉的 MIME 类型（否则双击真 .exe 不进引擎）
+  _mimes="x-scheme-handler/deepinwine;application/dwb;application/x-ms-dos-executable;application/x-msi;application/x-wine-extension-msp;text/x-msdos-batch;application/x-msdos-batch;application/vnd.microsoft.portable-executable;application/x-msdownload;application/x-dosexec;application/x-ms-shortcut;"
+  for _f in "$pkgdir/usr/share/applications/deepin-wine-builder.desktop" "$pkgdir/opt/apps/deepin-wine-builder/entries/applications/deepin-wine-builder.desktop"; do
+    [ -f "$_f" ] && sed -i "s|^MimeType=.*|MimeType=${_mimes}|" "$_f"
+  done
+}
